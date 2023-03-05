@@ -2,16 +2,15 @@
 A rails gem for generating partials with boilerplate Turbo Streams functions.
 
 ## Motivation
-At kidsfromvision.com, we use Turbo Streams pretty heavily. They're quite flexible, which is great, but often we end up using them to augment the same type of workflow: asynchronous actions. 
+Turbo Streams are quite flexible, which is great, but often we end up using them for the same thing: reflecting asyncronous states on the clinet. 
 
 A simple example is the steps taken when presenting a search modal to the client:
 
 1. The client submits a search query
-2. The server does some work to match results to that query
-3. The results are reflected on the client
+2. A loading state is shown to the client and the server does some work to match results to that query
+3. The results are shown on the client
 
 This means that we frequently end up rewriting this workflow, just for different parts of the client. 
-
 
 > **_NOTE:_** If all you want is to stream and update changes that are directly associated with instances of your rails models, you do not need to use this. There are great helper methods that are already included in the `Turbo::Broadcastable` modules in [hotwired/turbo-rails](https://github.com/hotwired/turbo-rails) that will make this super easy. This gem is designed as a layer on top of that module to allow a similar level of ease with partials that are not related to models (e.g. search results) 
 
@@ -44,6 +43,7 @@ Calling these methods will broadcast the loaded and loading state of the generat
 class SearchController < ApplicationController
   before_action :authenticate_user!
 
+  # e.g. GET /search_popover with data-turbo-stream: true
   def search_popover
     # Show loading version as soon as search starts
     broadcast_popover_loading
